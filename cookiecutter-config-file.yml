@@ -1,0 +1,13 @@
+# This file contains values from Cookiecutter
+
+default_context:
+  project_name: "sbermarket-api"
+  project_description: "Not official python client for product market sbermarket API."
+  organization: "Nov1kov"
+  license: "MIT"
+  minimal_python_version: 3.8
+  github_name: "nov1kov"
+  email: "spellh1@gmail.com"
+  version: "0.1.0"
+  line_length: "120"
+  create_example_template: "none"
