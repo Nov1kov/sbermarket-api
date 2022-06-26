@@ -17,6 +17,20 @@ Not official python client for product market sbermarket API.
 
 </div>
 
+## Задачи что преследовал:
+
+1. Поиск самого дешевого товара среди магазинов вокруг.
+2. Отлеживание в целом цен на продукты.
+3. Сделать алерт на дешевые товары.
+
+## Что внутри?
+
+Токен получается только из статического js скрипта. Где содержится JSON вида:
+```json
+{"api-version":"3.0","client-token":"TOKEN","is-storefront-ssr":l.sk}
+```
+Скорее всего он у всех одинаковый.
+
 ### Set up bots
 
 - Set up [Dependabot](https://docs.github.com/en/github/administering-a-repository/enabling-and-disabling-version-updates#enabling-github-dependabot-version-updates) to ensure you have the latest dependencies.

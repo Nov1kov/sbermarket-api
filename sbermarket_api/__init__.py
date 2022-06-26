@@ -1,7 +1,6 @@
 # type: ignore[attr-defined]
 """Not official python client for product market sbermarket API."""
 
-import sys
 from importlib import metadata as importlib_metadata
 
 
