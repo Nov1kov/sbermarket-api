@@ -6,7 +6,7 @@ if __name__ == "__main__":
     client = Client()
     # Получить все магазины доступные для данной точки.
     stores = client.stores(lat=60.003526, lon=30.253471)
-    # Собрать список, сколько уникальных товаров найдется по пойску.
+    # Найти где самые дешевые "Сок J7 томат 970 мл"
     lowest_prices = {}
     for store in stores:
         products = store.search_products("Сок J7 томат 970 мл")
