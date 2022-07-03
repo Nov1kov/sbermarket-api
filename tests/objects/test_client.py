@@ -1,4 +1,5 @@
 """Tests for hello function."""
+import json
 import re
 
 import pytest
@@ -73,9 +74,30 @@ def resp_get_stores():
         yield rsps
 
 
+@pytest.fixture()
+def resp_get_store():
+    with responses.RequestsMock() as rsps:
+        with open("tests/fixtures/store_83.json", encoding="utf-8") as f:
+            rsps.add(
+                method=responses.GET,
+                url=re.compile(r"https://sbermarket.ru/api/stores/83"),
+                json=json.load(f),
+                content_type="application/json",
+                status=200,
+            )
+            yield rsps
+
+
 def test_get_stores(resp_get_stores):
     client = Client()
     stores = client.stores(lat=60.003526, lon=30.253471)
     assert stores[0].id == "68dc8fd6-4c5d-471a-a305-57c3b104dab7"
     assert stores[1].name == "АШАН, Санкт-Петербург, Торфяная дорога"
     assert stores[2].store_id == 1293
+
+
+def test_get_store(resp_get_store):
+    client = Client()
+    store = client.store(83)
+    assert store.id == 83
+    assert store.name == "METRO, Санкт-Петербург, Комендантский просп."

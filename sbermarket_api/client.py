@@ -21,7 +21,8 @@ class Client:
 
     def store(self, id: int) -> Store:
         """Получить полную информацию по магазину"""
-        return Store(self.api, **self.api.request(f"stores/{id}"))
+        result = self.api.request(f"stores/{id}")["store"]
+        return Store(self.api, store_id=result["id"], **result)
 
     def shopping_session(self):
         """получить available_stores, favorite_product_skus, store_labels,
