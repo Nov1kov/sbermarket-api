@@ -25,7 +25,7 @@ class Store:
     def product(self, id: str):
         """Получить инфу по одному товару"""
         url = f"stores/{self.store_id}/products/{id}"
-        return self.api.request(url)
+        return Product(self.api, **self.api.request(url))
 
     def __str__(self):
         return self.name

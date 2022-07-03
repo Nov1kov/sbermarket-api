@@ -24,7 +24,6 @@ class API:
         resp = requests.get(full_url, headers=headers, params=query)
         try:
             result = resp.json()
-            # print(json.dumps(result, indent=2))
             return result
         except Exception as e:
             logging.exception(e)

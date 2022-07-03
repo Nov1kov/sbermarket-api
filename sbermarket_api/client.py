@@ -1,3 +1,5 @@
+from typing import List
+
 from sbermarket_api.api import API
 from sbermarket_api.store import Store
 
@@ -8,7 +10,7 @@ class Client:
     def __init__(self, base_url="https://sbermarket.ru/api/", client_token: str = DEFAULT_TOKEN):
         self.api = API(base_url=base_url, client_token=client_token)
 
-    def stores(self, lat: float, lon: float, shipping_method="delivery"):
+    def stores(self, lat: float, lon: float, shipping_method="delivery") -> List[Store]:
         """lat, lon - обязательные
         если указать shipping_method = None - выдаст 1000+ точек. Возможно все в России?
         возможные параметры еще: include=closest_shipping_options,labels,retailer,label_store_ids"""
@@ -17,9 +19,9 @@ class Client:
             query["shipping_method"] = shipping_method
         return [Store(self.api, **store) for store in self.api.request("stores", query=query)]
 
-    def store(self, id: int):
-        """Получить инфу по магазину"""
-        return self.api.request(f"stores/{id}")
+    def store(self, id: int) -> Store:
+        """Получить полную информацию по магазину"""
+        return Store(self.api, **self.api.request(f"stores/{id}"))
 
     def shopping_session(self):
         """получить available_stores, favorite_product_skus, store_labels,
