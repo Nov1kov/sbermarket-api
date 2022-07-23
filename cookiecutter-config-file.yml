@@ -8,6 +8,6 @@ default_context:
   minimal_python_version: 3.8
   github_name: "nov1kov"
   email: "spellh1@gmail.com"
-  version: "0.1.0"
+  version: "0.0.2"
   line_length: "120"
   create_example_template: "none"

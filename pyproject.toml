@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "sbermarket-api"
-version = "0.0.1"
+version = "0.0.2"
 description = "Not official python client for product market sbermarket API."
 readme = "README.md"
 authors = ["Nov1kov <spellh1@gmail.com>"]
