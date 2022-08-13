@@ -1,3 +1,4 @@
+# type: ignore[var-annotated]
 """Example of code."""
 
 from sbermarket_api.client import Client

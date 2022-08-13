@@ -52,6 +52,7 @@ coverage-badge = "^1.1.0"
 pytest-html = "^3.1.1"
 pytest-cov = "^3.0.0"
 responses = "^0.21.0"
+types-requests = "^2.28.8"
 
 [tool.black]
 # https://github.com/psf/black
@@ -94,7 +95,7 @@ python_version = 3.8
 pretty = true
 show_traceback = true
 color_output = true
-
+exclude = "venv"
 allow_redefinition = false
 check_untyped_defs = true
 disallow_any_generics = true

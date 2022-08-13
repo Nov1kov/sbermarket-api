@@ -1,4 +1,3 @@
-# type: ignore[attr-defined]
 """Not official python client for product market sbermarket API."""
 
 from importlib import metadata as importlib_metadata

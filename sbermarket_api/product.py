@@ -38,7 +38,8 @@ class Product:
         self.api = api
         self.sku = sku
         self.name = name
+        self.price = None
         self.__dict__.update(kwargs)
 
-    def __str__(self):
-        return f"{self.name} #{self.sku}"
+    def __repr__(self):
+        return f"Product: {self.name} #{self.sku}"
