@@ -8,7 +8,6 @@ pipx run openapi-python-client update --path .\sbermarket_api\sbermarket_openapi
 ustom-template-path=.\sbermarket_api\templates
 ```
 
-
 ## Dependencies
 
 We use `poetry` to manage the [dependencies](https://github.com/python-poetry/poetry).
@@ -258,14 +257,14 @@ You can also share your best practices with us.
 - Always up-to-date dependencies with [`@dependabot`](https://dependabot.com/). You will only [enable it](https://docs.github.com/en/github/administering-a-repository/enabling-and-disabling-version-updates#enabling-github-dependabot-version-updates).
 - Automatic drafts of new releases with [`Release Drafter`](https://github.com/marketplace/actions/release-drafter). You may see the list of labels in [`release-drafter.yml`](https://github.com/nov1kov/sbermarket-api/blob/master/.github/release-drafter.yml). Works perfectly with [Semantic Versions](https://semver.org/) specification.
 
-### Building and releasing your package
+### Building and releasing
 
 Building a new version of the application contains steps:
 
 - Bump the version of your package `poetry version <version>`. You can pass the new version explicitly, or a rule such as `major`, `minor`, or `patch`. For more details, refer to the [Semantic Versions](https://semver.org/) standard.
 - Make a commit to `GitHub`.
 - Create a `GitHub release`.
-- And... publish 🙂 `poetry publish --build`
+- The package automatically deployed to PyPi
 
 ## 🎯 What's next
 
