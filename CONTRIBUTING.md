@@ -1,5 +1,14 @@
 # How to contribute
 
+## How to generate update
+
+```commandline
+cd ..
+pipx run openapi-python-client update --path .\sbermarket_api\sbermarket_openapi.yaml --config .\sbermarket_api\openapi_gen_config.yml --c
+ustom-template-path=.\sbermarket_api\templates
+```
+
+
 ## Dependencies
 
 We use `poetry` to manage the [dependencies](https://github.com/python-poetry/poetry).
