@@ -1,0 +1,730 @@
+openapi: 3.0.3
+info:
+  title: sbermarket api
+  description: |-
+    Not official sbermarket client
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: MIT
+  version: 0.0.3
+externalDocs:
+  description: Find out more about this library
+  url: https://github.com/Nov1kov/sbermarket-api
+servers:
+  - url: https://sbermarket.ru/api/
+security:
+  - client_token: []
+tags:
+  - name: Client
+  - name: Store
+    description: Methods for store
+  - name: Product
+    description: Methods for specific product
+paths:
+  /stores:
+    get:
+      tags:
+        - Client
+      summary: Получить все магазины вокруг данной точки
+      parameters:
+        - name: shipping_method
+          in: query
+          description: если указать shipping_method = None - выдаст 1000+ точек. Возможно все в России?
+          required: false
+          schema:
+            type: string
+            default: delivery
+            enum:
+              - delivery
+        - name: lat
+          in: query
+          description: "**Latitude**. *Example: 35*. The latitude coordinate of the location of your interest. Must use with `lon`."
+          schema:
+            type: string
+
+        - name: lon
+          in: query
+          description: "**Longitude**. *Example: 139*. Longitude coordinate of the location of your interest. Must use with `lat`."
+          schema:
+            type: string
+        - name: api-version
+          description: "Версия api"
+          in: header
+          schema:
+            type: string
+            default: "3.0"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/store_list_item'
+        '400':
+          description: Invalid ID supplied
+        '405':
+          description: Validation exception
+
+  /stores/{store_id}:
+    get:
+      tags:
+        - Client
+      summary: Find store by ID
+      description: Returns a single store
+      parameters:
+        - name: store_id
+          in: path
+          description: ID of store to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: api-version
+          description: "Версия api"
+          in: header
+          schema:
+            type: string
+            default: "3.0"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Store not found
+  /stores/{store_id}/products:
+    get:
+      tags:
+        - Store
+      summary: Поиск товаров в магазине
+      parameters:
+        - name: store_id
+          in: path
+          description: ID of store to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: q
+          in: query
+          description: "querry with part of string"
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          description: "Сколько товаров на странице - 24 это максимум"
+          schema:
+            type: integer
+            default: 24
+        - name: page
+          in: query
+          description: "страница по счету"
+          schema:
+            type: integer
+            default: 1
+        - name: api-version
+          description: "Версия api"
+          in: header
+          schema:
+            type: string
+            default: "3.0"
+      responses:
+        '200':
+          description: Respresentation of objects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/search_products_response'
+        '301':
+          description: Moved permamently
+
+components:
+  schemas:
+    store_list_item:
+      type: object
+      properties:
+        id:
+          type: string
+        store_id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        min_order_amount:
+          type: integer
+          format: int32
+        min_order_amount_pickup:
+          type: integer
+          format: int32
+        min_first_order_amount:
+          type: integer
+          format: int32
+        min_first_order_amount_pickup:
+          type: integer
+          format: int32
+        delivery_forecast_text:
+          type: string
+          format: nullable
+        on_demand:
+          type: boolean
+        express_delivery:
+          type: boolean
+        minimum_order_amount:
+          type: integer
+          format: int32
+        minimum_order_amount_pickup:
+          type: integer
+          format: int32
+        shipping_methods:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              type:
+                type: string
+    store:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        uuid:
+          type: string
+        name:
+          type: string
+        city_id:
+          type: integer
+          format: int32
+        on_demand:
+          type: boolean
+        on_demand_raw:
+          type: boolean
+        time_zone:
+          type: string
+        available_on:
+          type: string
+        has_conveyor:
+          type: boolean
+        auto_routing:
+          type: boolean
+        express_delivery:
+          type: boolean
+        pickup_instruction:
+          type: string
+        import_key_postfix:
+          type: string
+        active:
+          type: boolean
+        box_scanning:
+          type: boolean
+        seconds_for_assembly_item:
+          type: integer
+          format: int32
+        additional_seconds_for_assembly:
+          type: integer
+          format: int32
+        retailer_store_id:
+          type: string
+        external_assembly:
+          type: boolean
+        training:
+          type: boolean
+        delivery_forecast_text:
+          type: string
+          format: nullable
+        pharmacy_legal_info:
+          type: string
+          format: nullable
+        phone:
+          type: string
+        orders_api_integration_type:
+          type: string
+        opening_time:
+          type: string
+        closing_time:
+          type: string
+        parallel_assembly:
+          type: boolean
+        assembly_dispatch:
+          type: boolean
+        retailer:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            name:
+              type: string
+            color:
+              type: string
+            secondary_color:
+              type: string
+            logo:
+              type: string
+            logo_background_color:
+              type: string
+            slug:
+              type: string
+            description:
+              type: string
+            icon:
+              type: string
+            is_alcohol:
+              type: boolean
+            is_agent_contract_types:
+              type: boolean
+            home_page_departments_depth:
+              type: integer
+              format: int32
+            appearance:
+              type: object
+              properties:
+                background_color:
+                  type: string
+                image_color:
+                  type: string
+                black_theme:
+                  type: boolean
+                logo_image:
+                  type: string
+                side_image:
+                  type: string
+                mini_logo_image:
+                  type: string
+            services:
+              type: array
+              items:
+                type: string
+        location:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            full_address:
+              type: string
+            city:
+              type: string
+            street:
+              type: string
+            building:
+              type: string
+            block:
+              type: string
+              format: nullable
+            floor:
+              type: string
+              format: nullable
+            apartment:
+              type: string
+              format: nullable
+            entrance:
+              type: string
+              format: nullable
+            elevator:
+              type: string
+              format: nullable
+            region:
+              type: string
+              format: nullable
+            comments:
+              type: string
+              format: nullable
+            phone:
+              type: string
+              format: nullable
+            area:
+              type: string
+              format: nullable
+            settlement:
+              type: string
+              format: nullable
+            lat:
+              type: number
+            lon:
+              type: number
+            city_kladr_id:
+              type: string
+              format: nullable
+            street_kladr_id:
+              type: string
+              format: nullable
+            user_id:
+              type: string
+              format: nullable
+            door_phone:
+              type: string
+              format: nullable
+            kind:
+              type: string
+              format: nullable
+            delivery_to_door:
+              type: boolean
+        store_zones:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              name:
+                type: string
+              area:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: number
+        config:
+          type: object
+          properties:
+            lifepay_identifier:
+              type: string
+            import_key_postfix:
+              type: string
+            seconds_for_assembly_item:
+              type: integer
+              format: int32
+            additional_seconds_for_assembly:
+              type: integer
+              format: int32
+        store_schedule:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            store_id:
+              type: integer
+              format: int32
+            template:
+              type: object
+              properties:
+                delivery_times:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      start:
+                        type: string
+                      end:
+                        type: string
+                      orders_limit:
+                        type: integer
+                        format: int32
+                      surge_amount:
+                        type: string
+                      shipment_min_kilos:
+                        type: string
+                      shipment_max_kilos:
+                        type: string
+                      shipments_excess_kilos:
+                        type: string
+                      shipments_excess_items_count:
+                        type: string
+                      closing_time_gap:
+                        type: integer
+                        format: int32
+                      kind:
+                        type: string
+                      store_zone_ids:
+                        type: array
+                        items:
+                          type: string
+        operational_zone:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            name:
+              type: string
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            name:
+              type: string
+            name_in:
+              type: string
+            name_from:
+              type: string
+            name_to:
+              type: string
+            slug:
+              type: string
+        tenants:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              hostname:
+                type: string
+              preferred_card_payment_method:
+                type: string
+        store_shipping_methods:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              store_id:
+                type: integer
+                format: int32
+              tenant_id:
+                type: string
+              available_on:
+                type: string
+              shipping_method:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  kind:
+                    type: string
+                  id:
+                    type: integer
+                    format: int32
+        payment_methods_stores:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              store_id:
+                type: integer
+                format: int32
+              tenant_id:
+                type: string
+              payment_method:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int32
+                  name:
+                    type: string
+                  environment:
+                    type: string
+                  key:
+                    type: string
+        licenses:
+          type: array
+          items:
+            type: object
+            properties:
+              kind:
+                type: string
+              number:
+                type: string
+              issue_date:
+                type: string
+                format: date
+              end_date:
+                type: string
+                format: date
+    search_products_response:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              legacy_offer_id:
+                type: integer
+                format: int32
+              legacy_product_id:
+                type: integer
+                format: int32
+              sku:
+                type: string
+              retailer_sku:
+                type: string
+              name:
+                type: string
+              price:
+                type: integer
+                format: int32
+              original_price:
+                type: integer
+                format: int32
+              discount:
+                type: integer
+                format: int32
+              human_volume:
+                type: string
+              volume:
+                type: integer
+                format: int32
+              volume_type:
+                type: string
+              items_per_pack:
+                type: integer
+                format: int32
+              discount_ends_at:
+                type: string
+                format: nullable
+              price_type:
+                type: string
+              grams_per_unit:
+                type: integer
+                format: int32
+              unit_price:
+                type: integer
+                format: int32
+              original_unit_price:
+                type: integer
+                format: int32
+              slug:
+                type: string
+              max_select_quantity:
+                type: integer
+                format: int32
+              canonical_url:
+                type: string
+              available:
+                type: boolean
+              vat_info:
+                type: string
+                format: nullable
+              bmpl_info:
+                type: string
+                format: nullable
+              promo_badge_ids:
+                type: array
+                items:
+                  type: string # not sure
+              requirements:
+                type: array
+                items:
+                  type: string # not sure
+              image_urls:
+                type: array
+                items:
+                  type: string
+        meta:
+          type: object
+          properties:
+            current_page:
+              type: integer
+              format: int32
+            next_page:
+              type: integer
+              format: int32
+            previous_page:
+              type: string
+              format: nullable
+            total_pages:
+              type: integer
+              format: int32
+            per_page:
+              type: integer
+              format: int32
+            total_count:
+              type: integer
+              format: int32
+        facets:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              name:
+                type: string
+              type:
+                type: string
+              options:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: integer
+                      format: int32
+                    count:
+                      type: integer
+                      format: int32
+                    active:
+                      type: boolean
+        sort:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              name:
+                type: string
+              order:
+                type: string
+              active:
+                type: boolean
+        root_categories:
+          type: object
+          properties:
+            key:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  permalink:
+                    type: string
+                  value:
+                    type: integer
+                    format: int32
+                  count:
+                    type: integer
+                    format: int32
+                  active:
+                    type: boolean
+        private_filters:
+          type: object
+          properties:
+            in_stock:
+              type: boolean
+            with_similar:
+              type: boolean
+        promo_badges:
+          type: array
+          items:
+            type: string # not sure
+
+
+  securitySchemes:
+    client_token:
+      type: apiKey
+      name: client-token
+      in: header

@@ -37,17 +37,11 @@ codestyle:
 .PHONY: formatting
 formatting: codestyle
 
-#* Linting
-.PHONY: test
-test:
-	PYTHONPATH=$(PYTHONPATH) poetry run pytest -c pyproject.toml --cov-report=html --cov=sbermarket_api tests/
-	poetry run coverage-badge -o assets/images/coverage.svg -f
-
 .PHONY: check-codestyle
 check-codestyle:
 	poetry run isort --diff --check-only --settings-path pyproject.toml ./
 	poetry run black --diff --check --config pyproject.toml ./
-	poetry run darglint --verbosity 2 sbermarket_api tests
+	poetry run darglint --verbosity 2 examples
 
 .PHONY: mypy
 mypy:
@@ -60,7 +54,7 @@ check-safety:
 	poetry run bandit -ll --recursive sbermarket_api tests
 
 .PHONY: lint
-lint: test check-codestyle mypy check-safety
+lint: check-codestyle mypy check-safety
 
 .PHONY: update-dev-deps
 update-dev-deps:
