@@ -151,18 +151,6 @@ make mypy
 </p>
 </details>
 
-<details>
-<summary>6. Tests with coverage badges</summary>
-<p>
-
-Run `pytest`
-
-```bash
-make test
-```
-
-</p>
-</details>
 
 <details>
 <summary>7. All linters</summary>
@@ -177,7 +165,7 @@ make lint
 the same as:
 
 ```bash
-make test && make check-codestyle && make mypy && make check-safety
+make check-codestyle && make mypy && make check-safety
 ```
 
 </p>
