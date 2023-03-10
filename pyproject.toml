@@ -37,7 +37,7 @@ attrs = ">=21.3.0"
 python-dateutil = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
-bandit = "^1.7.1"
+bandit = "^1.7.5"
 black = "*"
 darglint = "^1.8.1"
 isort = {extras = ["colors"], version = "^5.10.1"}
